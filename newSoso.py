@@ -46,4 +46,22 @@ for epoch in range(CFG['EPOCHS']):
     total_loss = 0
     progress_bar = tqdm(enumerate(formatted_data), total=len(formatted_data))
     for batch_idx, batch in progress_bar:
-        
+        # 데이터를 gpu 단으로 이동
+        batch = batch.to(device)
+        outputs = model(batch, labels = batch)
+        loss = outputs.loss
+        loss.backward()
+        optimizer.step()
+        optimizer.zero_grad()
+
+        total_loss += loss.item()
+
+        # 진행률 표시줄에 평균 손실 업데이트
+        progress_bar.set_description(f"Epoch {epoch+1} - Avg Loss: {total_loss / (batch_idx+1):.4f}")
+
+    # 에폭의 평균 손실을 출력
+    print(f"Epoch {epoch+1}/{CFG['EPOCHS']}, Average Loss: {total_loss / len(formatted_data)}")
+
+# 모델 저장
+model.save_pretrained("./hansoldeco-kogpt2")
+tokenizer.save_pretrained("./hansoldeco-kogpt2")

@@ -11,7 +11,7 @@ print(f'Using device : {device}')
 
 # data preprocessing
 # 데이터 로드
-data = pd.read_csv('train.csv')
+data = pd.read_csv('data/train.csv')
 
 # 토크나이저 로드
 tokenizer = PreTrainedTokenizerFast.from_pretrained('skt/logpt2-base-v2', eos_token='</s>')
@@ -65,3 +65,18 @@ for epoch in range(CFG['EPOCHS']):
 # 모델 저장
 model.save_pretrained("./hansoldeco-kogpt2")
 tokenizer.save_pretrained("./hansoldeco-kogpt2")
+
+# 저장된 Fine-tuned 모델과 토크나이저 불러오기
+model_dir = './hansoldeco-kogpt2'
+model = GPT2LMHeadModel.from_pretrained(model_dir)
+model.to(device)
+tokenizer = PreTrainedTokenizerFast.from_pretrained(model_dir)
+
+# Inference를 위한 test.csv 파일로드
+test = pd.read_csv('./test.csv')
+
+# test.csv의 '질문'에 대한 '답변'을 저장할 리스트
+preds = []
+
+# '질문' 컬럼의 각 질문에 대해 답변 생성
+for test_question in tqdm(test['질문'])

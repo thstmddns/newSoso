@@ -1,4 +1,4 @@
-# 폴더 제외
+# 제외할 폴더
 __pycache__/
 dateutil/
 numpy/
@@ -47,3 +47,11 @@ torchaudio-2.2.1+cu118.dist-info/
 torchvision/
 torchvision-0.17.1+cu118.dist-info/
 torio/
+
+# 제외할 파일
+/hansoldeco-kogpt2/config.json
+/hansoldeco-kogpt2/generation_config.json
+/hansoldeco-kogpt2/model.safetensors
+/hansoldeco-kogpt2/special_tokens_map.json
+/hansoldeco-kogpt2/tokenizer.json
+/hansoldeco-kogpt2/tokenizer_config.json

@@ -74,7 +74,7 @@ model.to(device)
 tokenizer = PreTrainedTokenizerFast.from_pretrained(model_dir)
 
 # Inference를 위한 test.csv 파일로드
-test = pd.read_csv('./test.csv')
+test = pd.read_csv('data/test.csv')
 
 # test.csv의 '질문'에 대한 '답변'을 저장할 리스트
 preds = []

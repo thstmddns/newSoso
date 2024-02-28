@@ -1,12 +1,12 @@
 import pandas as pd
 import numpy as np
 import torch
-from transformers import GPT2LMHeadModel, PreTrainedTokenizerFast, AdamW
+from transformers import GPT2LMHeadModel, PreTrainedTokenizerFast, AdamW, AutoModelForPreTraining
 from tqdm import tqdm
 from sentence_transformers import SentenceTransformer 
 
 # cuda 사용여부 확인
-device = torch.device("cuda" if torch.cuda.is_available() else 'cpu')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device : {device}')
 
 
@@ -29,13 +29,13 @@ for _, row in tqdm(data.iterrows()):
 print('Done.')
 
 # 모델로드
-model = GPT2LMHeadModel.from_pretrained('skt/kogpt2-base-v2')
+model = AutoModelForPreTraining.from_pretrained('skt/kogpt2-base-v2')
 model.to(device)
 # 모델 학습 하이퍼파라미터(Hyperparameter) 세팅
 # 실제 필요에 따라 조정
 CFG = {
     'LR' : 2e-5, # Learning Rate
-    'EPOCHS' : 50 # 학습 Epoch
+    'EPOCHS' : 30 # 학습 Epoch
 }
 
 # 모델 학습 설정

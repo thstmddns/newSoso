@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import torch
 from transformers import GPT2LMHeadModel, PreTrainedTokenizerFast, AdamW
-import tqdm
+from tqdm import tqdm
 from sentence_transformers import SentenceTransformer 
 
 # cuda 사용여부 확인
@@ -15,11 +15,11 @@ print(f'Using device : {device}')
 data = pd.read_csv('data/train.csv')
 
 # 토크나이저 로드
-tokenizer = PreTrainedTokenizerFast.from_pretrained('skt/logpt2-base-v2', eos_token='</s>')
+tokenizer = PreTrainedTokenizerFast.from_pretrained('skt/kogpt2-base-v2', eos_token='</s>')
 
 # 데이터 포맷팅 및 토크나이징
 formatted_data = []
-for _ , row in tqdm(data.iterrows()):
+for _, row in tqdm(data.iterrows()):
     for q_col in ['질문_1', '질문_2']:
         for a_col in ['답변_1', '답변_2', '답변_3', '답변_4', '답변_5']:
             #질문과 답변 쌍을 </s> token으로 연결
@@ -35,7 +35,7 @@ model.to(device)
 # 실제 필요에 따라 조정
 CFG = {
     'LR' : 2e-5, # Learning Rate
-    'EPOCHS' : 10 # 학습 Epoch
+    'EPOCHS' : 50 # 학습 Epoch
 }
 
 # 모델 학습 설정
@@ -104,3 +104,18 @@ for test_question in tqdm(test['질문']):
         answer_only = full_text[answer_start:].strip()
         answer_only = answer_only.replace('\n', ' ')
         preds.append(answer_only)
+
+# Embedding Vector 추출에 활용할 모델(distiluse-base-multilingual-cased-v1) 불러오기
+model = SentenceTransformer('distiluse-base-multilingual-cased-v1')
+
+# 생성한 모든 응답(답변)으로부터 Embedding Vector 추출
+pred_embeddings = model.encode(preds)
+pred_embeddings.shape
+
+submit = pd.read_csv('./sample_submission.csv')
+# 제출 양식 파일(sample_submission.csv)을 활용하여 embedding Vector로 변환한 결과를 삽입
+submit.iloc[:, 1:] = pred_embeddings
+submit.head()
+
+#  리더보드 제출을 위한 csv 파일 생성
+submit.to_csv(f'/baseline_submit.csv', index=False)

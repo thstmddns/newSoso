@@ -41,3 +41,9 @@ joblib-1.3.2.dist-info/
 threadpoolctl-3.3.0.dist-info/
 scipy-1.12.0-cp311-cp311-win_amd64.whl/
 threadpoolctl.py/
+torch-2.2.1+cu118.dist-info/
+torchaudio/
+torchaudio-2.2.1+cu118.dist-info/
+torchvision/
+torchvision-0.17.1+cu118.dist-info/
+torio/

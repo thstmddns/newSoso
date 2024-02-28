@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from transformers import GPT2LMHeadModel, PreTrainedTokenizerFast, AdamW
 import tqdm
+from sentence_transformers import SentenceTransformer 
 
 # cuda 사용여부 확인
 device = torch.device("cuda" if torch.cuda.is_available() else 'cpu')
@@ -79,4 +80,27 @@ test = pd.read_csv('./test.csv')
 preds = []
 
 # '질문' 컬럼의 각 질문에 대해 답변 생성
-for test_question in tqdm(test['질문'])
+for test_question in tqdm(test['질문']):
+    # 입력 텍슽트를 토큰화하고 모델 입력 형태로 변환
+    input_ids = tokenizer.encode(test_question + tokenizer.eos_token, return_tensors='pt')
+
+    # 답변 생성
+    outputs_sequence = model.generate(
+        input_ids = input_ids.to(device),
+        max_length = 300,
+        temperature=0.9,
+        top_k=1,
+        top_p=0.9,
+        repetition_panalty=1.2,
+        do_sample=True,
+        num_return_sequences = 1
+    )
+
+    # 생성된 텍스트(답변) 저장
+    for generated_sequence in outputs_sequence:
+        full_text = tokenizer.decode(generated_sequence, skip_special_tokens=False)
+        # 질문과 답변의 사이를 나타내는 eos_token (</s>)를 찾아, 이후부터 출력
+        answer_start = full_text.find(tokenizer.eos_token) + len(tokenizer.eos_token)
+        answer_only = full_text[answer_start:].strip()
+        answer_only = answer_only.replace('\n', ' ')
+        preds.append(answer_only)

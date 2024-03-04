@@ -35,7 +35,7 @@ model.to(device)
 # 실제 필요에 따라 조정
 CFG = {
     'LR' : 2e-5, # Learning Rate
-    'EPOCHS' : 30 # 학습 Epoch
+    'EPOCHS' : 2 # 학습 Epoch
 }
 
 # 모델 학습 설정
@@ -91,7 +91,7 @@ for test_question in tqdm(test['질문']):
         temperature = 0.9,
         top_k = 1,
         top_p = 0.9,
-        repetition_panalty = 1.2,
+        repetition_penalty = 1.2,
         do_sample = True,
         num_return_sequences = 1
     )
@@ -104,7 +104,7 @@ for test_question in tqdm(test['질문']):
         answer_only = full_text[answer_start:].strip()
         answer_only = answer_only.replace('\n', ' ')
         # 답변을 출력해보자
-        # print(answer_only)
+        print(answer_only)
         preds.append(answer_only)
 
 # Embedding Vector 추출에 활용할 모델(distiluse-base-multilingual-cased-v1) 불러오기

@@ -120,4 +120,4 @@ submit.iloc[:, 1:] = pred_embeddings
 submit.head()
 
 #  리더보드 제출을 위한 csv 파일 생성
-submit.to_csv(f'/baseline_submit.csv', index=False)
+submit.to_csv(f'/baseline_submit.csv', index=False) 

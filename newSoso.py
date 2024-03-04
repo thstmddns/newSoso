@@ -39,7 +39,7 @@ CFG = {
 }
 
 # 모델 학습 설정
-optimizer = AdamW(model.parameters(), lr=CFG['LR'])
+optimizer = torch.optim.AdamW(model.parameters(), lr=CFG['LR'])
 model.train()
 
 # 모델 학습
@@ -88,11 +88,11 @@ for test_question in tqdm(test['질문']):
     outputs_sequence = model.generate(
         input_ids = input_ids.to(device),
         max_length = 300,
-        temperature=0.9,
-        top_k=1,
-        top_p=0.9,
-        repetition_panalty=1.2,
-        do_sample=True,
+        temperature = 0.9,
+        top_k = 1,
+        top_p = 0.9,
+        repetition_panalty = 1.2,
+        do_sample = True,
         num_return_sequences = 1
     )
 
@@ -103,6 +103,8 @@ for test_question in tqdm(test['질문']):
         answer_start = full_text.find(tokenizer.eos_token) + len(tokenizer.eos_token)
         answer_only = full_text[answer_start:].strip()
         answer_only = answer_only.replace('\n', ' ')
+        # 답변을 출력해보자
+        # print(answer_only)
         preds.append(answer_only)
 
 # Embedding Vector 추출에 활용할 모델(distiluse-base-multilingual-cased-v1) 불러오기

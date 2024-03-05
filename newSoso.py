@@ -35,7 +35,7 @@ model.to(device)
 # 실제 필요에 따라 조정
 CFG = {
     'LR' : 2e-5, # Learning Rate
-    'EPOCHS' : 50 # 학습 Epoch
+    'EPOCHS' : 1 # 학습 Epoch
 }
 
 # 모델 학습 설정
@@ -114,10 +114,10 @@ model = SentenceTransformer('distiluse-base-multilingual-cased-v1')
 pred_embeddings = model.encode(preds)
 pred_embeddings.shape
 
-submit = pd.read_csv('./sample_submission.csv')
+submit = pd.read_csv('data/sample_submission.csv')
 # 제출 양식 파일(sample_submission.csv)을 활용하여 embedding Vector로 변환한 결과를 삽입
 submit.iloc[:, 1:] = pred_embeddings
 submit.head()
 
 #  리더보드 제출을 위한 csv 파일 생성
-submit.to_csv(f'/baseline_submit.csv', index=False) 
+submit.to_csv(f'data/baseline_submit.csv', index=False) 

@@ -35,7 +35,7 @@ model.to(device)
 # 실제 필요에 따라 조정
 CFG = {
     'LR' : 2e-5, # Learning Rate
-    'EPOCHS' : 1 # 학습 Epoch
+    'EPOCHS' : 100 # 학습 Epoch
 }
 
 # 모델 학습 설정

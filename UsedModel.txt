@@ -1,1 +1,7 @@
 https://huggingface.co/google/gemma-7b
+
+# 모델
+google/gemma-7b
+
+# 토크나이저
+google/gemma-7b
